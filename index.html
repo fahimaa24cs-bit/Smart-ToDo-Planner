@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart To-Do Planner</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body><div class="app">
+<aside id="side"><div class="brand"><b>✓</b><strong>Smart To-Do<small>Planner</small></strong></div>
+<nav><button class="active" data-v="home">⌂ Home</button><button data-v="tasks">☑ My Tasks</button><button data-v="spaces">◈ Spaces</button><button data-v="focus">◉ Focus Mode</button><button data-v="assistant">✦ Smart Assistant</button><button data-v="convert">↥ Import & Convert</button></nav>
+<div class="sidebottom"><div class="sideprog">Today's progress <b id="sp">0%</b><i><em id="bar"></em></i></div><button id="theme">☾ Dark mode</button></div></aside>
+<main><header><button id="menu">☰</button><span id="date"></span><button class="round" id="addTop">＋</button></header>
+
+<section id="home" class="view active"><div class="hero"><div><small>YOUR PRODUCTIVITY SPACE</small><h1 id="greet"></h1><p>Plan it. Focus on it. Finish it.</p></div><div class="orb">✓</div></div>
+<div class="card pin"><div class="head"><div><small>PINNED FOR TODAY</small><h2>⭐ Important tasks</h2></div><button class="link" onclick="go('tasks')">View all →</button></div><div id="important" class="impgrid"></div></div>
+<div class="stats"><div class="stat">Tasks<strong id="stotal">0</strong><small>planned</small></div><div class="stat">Completed<strong id="sdone">0</strong><small>finished</small></div><div class="stat">Focus time<strong id="sfocus">0m</strong><small>tracked</small></div><div class="stat">Progress<strong id="spercent">0%</strong><small>today</small></div></div>
+<div class="twocol"><div class="card"><div class="head"><h2>Today's tasks</h2><button class="primary" onclick="openModal()">＋ Add</button></div><div id="homeTasks"></div></div>
+<div class="card center"><small>OVERVIEW</small><h2>Progress</h2><div class="ring" id="ring"><div><b id="rp">0%</b><small>complete</small></div></div><p id="legend">0 completed · 0 remaining</p></div></div></section>
+
+<section id="tasks" class="view"><div class="title"><div><small>ORGANIZE EVERYTHING</small><h1>My Tasks</h1></div><button class="primary" onclick="openModal()">＋ New task</button></div>
+<div class="toolbar"><input id="search" placeholder="⌕ Search tasks..."><select id="filter"><option value="all">All spaces</option></select><select id="status"><option value="all">All</option><option value="active">Active</option><option value="done">Completed</option><option value="important">Important</option></select></div><div id="allTasks"></div></section>
+
+<section id="spaces" class="view"><div class="title"><div><small>CONTEXTUAL LISTS</small><h1>Spaces</h1></div><button class="primary" id="newSpace">＋ New space</button></div><div id="spacesGrid" class="spacegrid"></div></section>
+
+<section id="focus" class="view"><div class="title"><div><small>ONE THING AT A TIME</small><h1>Focus Mode</h1></div></div>
+<div class="focus"><small>🎯 FOCUS SESSION</small><h2 id="ftitle">Choose a task</h2><p id="fmeta">Select an active task below.</p>
+<div class="timer" id="timer"><div><b id="clock">60:00</b><small id="tstate">ready</small></div></div>
+<div class="presets"><select id="preset"><option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>1 hour</option><option value="custom">Custom</option></select><input id="custom" type="number" min="1" placeholder="minutes" hidden></div>
+<div class="checks"><label><input type="checkbox" data-m="30" checked>30m</label><label><input type="checkbox" data-m="20" checked>20m</label><label><input type="checkbox" data-m="10" checked>10m</label><label><input type="checkbox" data-m="5" checked>5m</label><label><input type="checkbox" data-m="1" checked>1m</label></div>
+<div class="focus-controls"><button class="primary" id="start">Start focus</button><button class="secondary" id="pause" disabled>Pause</button><button class="secondary" id="stop">Stop</button></div><button class="secondary complete-btn" id="complete">✓ Complete</button><p class="muted">Milestone alerts appear as the timer counts down.</p></div>
+<div class="card choose"><h2>Active tasks</h2><div id="focusTasks"></div></div></section>
+
+<section id="assistant" class="view"><div class="title"><div><small>PLAN WITH WORDS</small><h1>Smart Assistant</h1></div><span class="ai-status" id="aiStatus">● Checking AI…</span></div><div class="assistant"><div class="chat card"><div class="ahead">✦ <b>Planner Assistant</b><small id="assistantMode">AI planning mode</small></div><div id="messages" class="messages"><div class="msg bot">Hi Fahima! Tell me what you need to get done. I can answer questions, make plans, break projects into steps, prioritize work, and turn useful results into tasks.</div></div><div class="chips"><button>Make a 3-day DBMS study plan</button><button>Break my web project into steps</button><button>Help me plan tomorrow</button></div><div class="input"><textarea id="chat" rows="2" placeholder="Ask anything about your tasks or schedule..."></textarea><button id="send">➤</button></div><p class="note">Live AI runs through the Python backend. Your API key stays on the server, never in this page.</p></div>
+<div class="card tools"><small>QUICK ACTIONS</small><h2>Turn ideas into tasks</h2><button data-p="study">📚 <b>Study plan</b><small>Structured study tasks</small> →</button><button data-p="project">💻 <b>Project plan</b><small>Break a project into steps</small> →</button><button data-p="routine">☀️ <b>Daily routine</b><small>Build a routine</small> →</button></div></div></section>
+
+<section id="convert" class="view"><div class="title"><div><small>CONVERT INFORMATION</small><h1>Import & Convert</h1></div></div><div class="convert">
+<div class="card box"><h2>📋 Table → Tasks</h2><p>Paste CSV-style rows. A header is optional.</p><textarea id="tin" placeholder="Task, Space, Minutes\nFinish DBMS assignment, College, 60"></textarea><button class="primary" id="toTasks">Convert</button></div>
+<div class="card box"><h2>📝 Tasks → Table</h2><p>Enter the tasks you want converted. Nothing is added automatically.</p><textarea id="tableTasks" placeholder="Complete DBMS assignment
+Study Python
+Prepare presentation"></textarea><button class="secondary" id="toTable" disabled>Generate table</button><textarea id="tout" readonly placeholder="Your generated table will appear here"></textarea><button class="link" id="copy">Copy table</button></div>
+<div class="card box"><h2>🖼️ Image → Tasks</h2><p>Upload a timetable, screenshot or handwritten list. OCR extracts visible text for review.</p><input id="image" type="file" accept="image/*"><div id="preview">No image selected</div><div id="ocrResult" class="ocr-result"></div><button class="secondary" id="ocrBtn" disabled>Extract tasks from image</button><button class="primary" id="addOcr" hidden>Add extracted tasks</button></div></div></section>
+</main></div>
+
+<div id="modal" class="modal-overlay" aria-hidden="true"><div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="x" id="closeModal" aria-label="Close">×</button><small>NEW TASK</small><h2 id="modalTitle">Add a task</h2><form id="form"><label>Task<input id="task" required placeholder="Complete DBMS assignment"></label><label>Space<select id="space"></select></label><label>Time (minutes)<input id="minutes" type="number" min="1" value="60"></label><p class="auto-emoji" id="emojiPreview">🎓 Emoji is automatic from the selected space</p><label class="check"><input id="important" type="checkbox"> ⭐ Pin as important</label><button class="primary full" type="submit">Add task</button></form></div></div><div id="toast"></div>
+<script src="script.js"></script></body></html>

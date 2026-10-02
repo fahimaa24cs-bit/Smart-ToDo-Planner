@@ -1,0 +1,2 @@
+# No third-party packages are required for the v3 local server.
+# The AI connection uses Python's standard library and the OpenAI HTTPS API.
